@@ -1,0 +1,90 @@
+.Phone {
+  background-color: #39424f;
+  height: 60vh;
+  width: 15vw;
+
+  display: flex;
+  right: 0%;
+  bottom: 0%;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+}
+
+.MainPageButtons {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  margin: 3px;
+}
+
+.TopRow {
+  background-color: #000000;
+  height: 8%;
+  width: 100%;
+}
+
+.BottomRow {
+  background-color: #1f324d;
+  height: 8%;
+  width: 100%;
+
+  display: flex;
+  right: 0%;
+  bottom: 0%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.AppPage {
+  width: 100%;
+  height: 100%;
+}
+
+.App {
+  text-align: center;
+}
+
+.NotiContainer {
+  width: 100%;
+
+  display: flex;
+  position: absolute;
+  flex-wrap: wrap;
+  pointer-events: none;
+
+  justify-content: center;
+}
+
+.Noti {
+  background-color: rgba(24, 24, 24, 0.95);
+
+  border-radius: 8px;
+  z-index: 10;
+  width: 90%;
+  height: 12%;
+  flex-shrink: 0;
+  margin-bottom: 8px;
+}
+
+.NotiTopRow {
+  height: 30%;
+  width: 100%;
+  
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  vertical-align: middle;
+
+  margin-top: 4px;
+}
+
+.NotiBottomRow {
+  height: 70%;
+  width: 100%;
+
+  display: flex;
+  margin-top: 2px;
+  margin-bottom: 4px;
+}
