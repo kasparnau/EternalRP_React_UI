@@ -1,4 +1,4 @@
 server/
 NoPixel-3.0-Dump-main/
 Nopixel/
-node_modules/
+**/node_modules
