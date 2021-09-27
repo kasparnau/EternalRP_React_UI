@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button } from '@material-ui/core';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import { Button } from '@mui/material';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
 export default function Noti(props){
     return (

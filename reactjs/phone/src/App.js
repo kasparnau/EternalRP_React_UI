@@ -7,7 +7,7 @@ function App() {
   const [currentPage, setPage] = React.useState("main")
   return (
     <div className="App">
-        <Phone 
+        <Phone
           currentPage={currentPage}
           setPage={(page) => {
             console.log("New page: " + page)

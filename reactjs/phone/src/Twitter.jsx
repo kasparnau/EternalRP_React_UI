@@ -1,10 +1,10 @@
 import React from 'react';
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 
 function Twitter(props){
     return (
         <div style={{backgroundColor: 'red', height: '100%'}}>
-            welcome to twatterl ol
+            welcome to twotter lol
         </div>
     )
 }

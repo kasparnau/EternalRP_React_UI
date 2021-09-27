@@ -1,12 +1,26 @@
+.PhoneHolder {
+  background-color: black;
+  padding: 10px;
+
+  border-radius: 16px;
+
+  display: flex;
+  right: 1%;
+  bottom: 1%;
+  position: absolute;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .Phone {
   background-color: #39424f;
   height: 60vh;
   width: 15vw;
 
-  display: flex;
-  right: 0%;
-  bottom: 0%;
-  position: absolute;
+  border-radius: 10px;
+
   display: flex;
   flex-direction: column;
 }
@@ -19,15 +33,41 @@
 }
 
 .TopRow {
-  background-color: #000000;
-  height: 8%;
+  background-color: hsla(213, 18%, 12%, 0.692);
+  height: 4%;
   width: 100%;
+
+  border-radius: 10px 10px 0px 0px;
+
+  display: flex;
+}
+
+.TopRowLeft {
+  width: 50%;
+  color: white;
+  padding-left: 10px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.TopRowRight {
+  width: 50%;
+  color: white;
+  padding-right: 10px;
+
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
 }
 
 .BottomRow {
-  background-color: #1f324d;
+  background-color: hsla(213, 18%, 12%, 0.692);
   height: 8%;
   width: 100%;
+
+  border-radius: 0px 0px 10px 10px;
 
   display: flex;
   right: 0%;
@@ -71,7 +111,7 @@
 .NotiTopRow {
   height: 30%;
   width: 100%;
-  
+
   display: flex;
   justify-content: flex-start;
   align-items: center;
