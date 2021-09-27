@@ -46,7 +46,7 @@ function Circle(props) {
                         <circle
                             class="progress-ring__circle"
                             style={{transform: `rotate(${props.circleT-90}deg)`, zIndex: 9}}
-                            stroke="#279787"
+                            stroke="#09aa89"
                             stroke-width="12"
                             fill="transparent"
                             r="52"
