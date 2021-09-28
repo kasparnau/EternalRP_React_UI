@@ -1,19 +1,53 @@
-import logo from './logo.svg';
-import './App.css';
-import Phone from './Phone.jsx'
-import React from 'react';
+import logo from "./logo.svg";
+import "./App.css";
+import Phone from "./Phone.jsx";
+import React from "react";
+import useStore from "./store";
+import { createTheme } from "@mui/material";
+import { ThemeProvider } from "@mui/private-theming";
+import sendNUI from "./sendNUI";
+
+const IS_PROD = process.env.NODE_ENV === "production";
 
 function App() {
-  const [currentPage, setPage] = React.useState("main")
+  const [canShow, updateShow] = React.useState(!IS_PROD);
+  const [currentPage, setPage] = React.useState("main");
+
+  const { setCharacter } = useStore();
+
+  const darkTheme = createTheme({
+    palette: {
+      mode: "dark",
+    },
+  });
+
+  React.useEffect(() => {
+    window.addEventListener("message", (event) => {
+      if (event.data.show !== undefined) {
+        updateShow(event.data.show);
+      }
+      if (event.data.character !== undefined) {
+        setCharacter(event.data.character);
+      }
+    });
+
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        sendNUI("closeNui", {}, () => {});
+      }
+    });
+  }, []);
+
   return (
-    <div className="App">
+    <div className="App" style={{ display: canShow ? "block" : "none" }}>
+      <ThemeProvider theme={darkTheme}>
         <Phone
           currentPage={currentPage}
           setPage={(page) => {
-            console.log("New page: " + page)
-            setPage(page)
+            setPage(page);
           }}
         />
+      </ThemeProvider>
     </div>
   );
 }

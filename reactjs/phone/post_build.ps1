@@ -1,0 +1,1 @@
+Copy-Item "./build/*" -Destination "C:\EternalRP\server-data\resources\[local]\jp-phone\build" -Recurse -force
