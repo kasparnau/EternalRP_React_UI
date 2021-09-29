@@ -5,7 +5,7 @@ import SavingsIcon from "@mui/icons-material/Savings";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import useStore from "./store";
 import { Fade, Tooltip } from "@mui/material";
-
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 var formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
@@ -19,6 +19,19 @@ function Details(props) {
     var formatted = [num?.slice(0, 3), "-", num?.slice(3)].join("");
     return formatted;
   };
+
+  const License = (props) => {
+    return (
+      <div style={{display: 'flex', width: '100%', paddingTop: '8px'}}>
+        <div style={{textAlign: 'left', width: '90%'}}>
+          {props.name}
+        </div>
+        <div>
+          <CheckCircleIcon style={{color: "#8c9f62"}}/>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div
@@ -76,6 +89,12 @@ function Details(props) {
             </div>
           </div>
         </Tooltip>
+      </div>
+      <div style={{ padding: "16px" }}>
+        <div style={{fontSize: '24px'}}>Licenses</div>
+        {character.licenses.map((license) => 
+          <License name={license.name}/>
+        )}
       </div>
     </div>
   );
