@@ -19,6 +19,13 @@ function App() {
     palette: {
       mode: "dark",
     },
+    styleOverrides: {
+      MuiBackdrop: {
+        root: {
+          backgroundColor: "rgba(0,0,0,0.2)",
+        },
+      },
+    },
   });
 
   React.useEffect(() => {

@@ -14,6 +14,11 @@
   justify-content: center;
 }
 
+::-webkit-scrollbar {
+  width: 0; /* Remove scrollbar space */
+  background: transparent; /* Optional: just make scrollbar invisible */
+}
+
 .Phone {
   background-color: #39424f;
   height: 60vh;
@@ -23,6 +28,15 @@
 
   display: flex;
   flex-direction: column;
+}
+
+.Spinner {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .MainPageButtons {
@@ -80,6 +94,7 @@
 .AppPage {
   width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 
 .App {

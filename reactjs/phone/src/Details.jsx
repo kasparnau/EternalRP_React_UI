@@ -12,7 +12,10 @@ var formatter = new Intl.NumberFormat("en-US", {
 });
 
 function Details(props) {
+  const { NUI } = { ...props };
+
   const { character } = useStore();
+  const [pageData, setPageData] = React.useState({});
 
   const formatPhoneNumber = (num) => {
     num = num?.toString();
@@ -22,16 +25,33 @@ function Details(props) {
 
   const License = (props) => {
     return (
-      <div style={{display: 'flex', width: '100%', paddingTop: '8px'}}>
-        <div style={{textAlign: 'left', width: '90%'}}>
-          {props.name}
-        </div>
+      <div style={{ display: "flex", width: "100%", paddingTop: "8px" }}>
+        <div style={{ textAlign: "left", width: "90%" }}>{props.name}</div>
         <div>
-          <CheckCircleIcon style={{color: "#8c9f62"}}/>
+          <CheckCircleIcon style={{ color: "#8c9f62" }} />
         </div>
       </div>
-    )
+    );
+  };
+
+  function reloadPage() {
+    NUI(
+      "fetchDetailsPage",
+      {},
+      {
+        citizen_id: 3,
+        phone_number: 9165881,
+        bank: { account_id: 1369, account_balance: 1369631 },
+        licenses: [],
+      }
+    ).then((resp) => {
+      setPageData(resp);
+    });
   }
+
+  React.useEffect(() => {
+    reloadPage();
+  }, []);
 
   return (
     <div
@@ -40,6 +60,7 @@ function Details(props) {
         height: "100%",
         width: "100%",
         color: "white",
+        userSelect: "none",
       }}
     >
       <div style={{ padding: "8px" }}>
@@ -49,7 +70,7 @@ function Details(props) {
               <PersonIcon style={{ color: "white" }} fontSize="large" />
             </div>
             <div style={{ textAlign: "left", paddingLeft: "8px" }}>
-              {character?.cid}
+              {pageData.citizen_id}
             </div>
           </div>
         </Tooltip>
@@ -65,7 +86,7 @@ function Details(props) {
               <PhoneIphoneIcon style={{ color: "white" }} fontSize="large" />
             </div>
             <div style={{ textAlign: "left", paddingLeft: "8px" }}>
-              {formatPhoneNumber(character?.phone_number)}
+              {formatPhoneNumber(pageData.phone_number)}
             </div>
           </div>
         </Tooltip>
@@ -75,7 +96,7 @@ function Details(props) {
               <AccountBalanceIcon style={{ color: "white" }} fontSize="large" />
             </div>
             <div style={{ textAlign: "left", paddingLeft: "8px" }}>
-              {character.bank?.account_id}
+              {pageData.bank?.account_id}
             </div>
           </div>
         </Tooltip>
@@ -85,16 +106,19 @@ function Details(props) {
               <SavingsIcon style={{ color: "white" }} fontSize="large" />
             </div>
             <div style={{ textAlign: "left", paddingLeft: "8px" }}>
-              {formatter.format(character.bank?.account_balance)}
+              {formatter.format(pageData.bank?.account_balance)}
             </div>
           </div>
         </Tooltip>
       </div>
       <div style={{ padding: "16px" }}>
-        <div style={{fontSize: '24px'}}>Licenses</div>
-        {character.licenses.map((license) => 
-          <License name={license.name}/>
+        <div style={{ fontSize: "24px" }}>Licenses</div>
+        {pageData.licenses?.length === 0 && (
+          <div>You don't have any licenses</div>
         )}
+        {pageData.licenses?.map((license) => (
+          <License name={license.name} />
+        ))}
       </div>
     </div>
   );

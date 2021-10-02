@@ -10,7 +10,27 @@ import Details from "./Details.jsx";
 import background from "./img/background.png";
 import Contacts from "./Contacts.jsx";
 
+import Spinner from "react-spinners/RotateLoader";
+
+import sendNUI from "./sendNUI";
+
 function Phone(props) {
+  const [loading, setLoading] = React.useState(false);
+
+  async function doNuiAction(action, data, mockAnswer, skipLoading) {
+    if (!skipLoading) {
+      setLoading(true);
+    }
+
+    const result = await sendNUI(action, data, mockAnswer);
+
+    if (!skipLoading) {
+      setLoading(false);
+    }
+
+    return result;
+  }
+
   return (
     <div className="PhoneHolder">
       <div
@@ -21,12 +41,28 @@ function Phone(props) {
         }}
       >
         <TopRow />
-        <div className="AppPage">
-          {props.currentPage == "main" && <MainPage setPage={props.setPage} />}
-          {props.currentPage == "details" && <Details />}
-          {props.currentPage == "twitter" && <Twitter />}
-          {props.currentPage == "ping" && <Ping />}
-          {props.currentPage == "contacts" && <Contacts />}
+        {loading && (
+          <div
+            className="AppPage"
+            style={{ backgroundColor: "rgb(25, 30, 36)" }}
+          >
+            <div className="Spinner">
+              <Spinner color="white" size={15} loading={loading} />
+            </div>
+          </div>
+        )}
+
+        <div
+          className="AppPage"
+          style={{ display: !loading ? "block" : "none" }}
+        >
+          {props.currentPage == "main" && (
+            <MainPage setPage={props.setPage} NUI={doNuiAction} />
+          )}
+          {props.currentPage == "details" && <Details NUI={doNuiAction} />}
+          {props.currentPage == "twitter" && <Twitter NUI={doNuiAction} />}
+          {props.currentPage == "ping" && <Ping NUI={doNuiAction} />}
+          {props.currentPage == "contacts" && <Contacts NUI={doNuiAction} />}
         </div>
         <BottomRow setPage={props.setPage} />
       </div>
