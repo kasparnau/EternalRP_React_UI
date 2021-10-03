@@ -8,9 +8,59 @@ const debugCharacter = {
   licenses: [{ name: "Drivers License" }, { name: "Hunting License" }],
 };
 
-const useStore = create((set) => ({
+let mainStore = (set) => ({
   character: IS_PROD ? {} : debugCharacter,
   setCharacter: (pCharacter) => set((state) => ({ character: pCharacter })),
-}));
 
-export default useStore;
+  currentPage: "main",
+  setPage: (name) => set((state) => ({ currentPage: name })),
+});
+
+export const useMainStore = create(mainStore);
+
+let contactsStore = (set) => ({
+  contacts: [],
+  setContacts: (contacts) => set((state) => ({ contacts })),
+  search: "",
+  setSearch: (value) => set((state) => ({ search: value })),
+
+  modalOpen: false,
+  openModal: (value) => set((state) => ({ modalOpen: value })),
+
+  numberCorrect: false,
+  setNumberCorrect: (value) => set((state) => ({ numberCorrect: value })),
+  nameCorrect: false,
+  setNameCorrect: (value) => set((state) => ({ nameCorrect: value })),
+  name: "",
+  setName: (value) => set((state) => ({ name: value })),
+  number: "",
+  setNumber: (value) => set((state) => ({ number: value })),
+});
+
+export const useContactsStore = create(contactsStore);
+
+let twitterStore = (set) => ({
+  pageData: [],
+  setPageData: (data) => set((state) => ({ pageData: data })),
+
+  modalOpen: false,
+  openModal: (value) => set((state) => ({ modalOpen: value })),
+
+  text: "",
+  setText: (value) => set((state) => ({ text: value })),
+
+  textCorrect: false,
+  setTextCorrect: (value) => set((state) => ({ textCorrect: value })),
+});
+
+export const useTwitterStore = create(twitterStore);
+
+let pingStore = (set) => ({
+  target: "",
+  setTarget: (value) => set((state) => ({ target: value })),
+
+  canSend: false,
+  setCanSend: (value) => set((state) => ({ canSend: value })),
+});
+
+export const usePingStore = create(pingStore);

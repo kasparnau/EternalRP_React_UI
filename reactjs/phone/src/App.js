@@ -2,7 +2,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import Phone from "./Phone.jsx";
 import React from "react";
-import useStore from "./store";
+import { useMainStore } from "./store";
 import { createTheme } from "@mui/material";
 import { ThemeProvider } from "@mui/private-theming";
 import sendNUI from "./sendNUI";
@@ -11,9 +11,9 @@ const IS_PROD = process.env.NODE_ENV === "production";
 
 function App() {
   const [canShow, updateShow] = React.useState(!IS_PROD);
-  const [currentPage, setPage] = React.useState("main");
 
-  const { setCharacter } = useStore();
+  const { currentPage, setPage } = useMainStore();
+  const { setCharacter } = useMainStore();
 
   const darkTheme = createTheme({
     palette: {
@@ -47,14 +47,16 @@ function App() {
 
   return (
     <div className="App" style={{ display: canShow ? "block" : "none" }}>
-      <ThemeProvider theme={darkTheme}>
-        <Phone
-          currentPage={currentPage}
-          setPage={(page) => {
-            setPage(page);
-          }}
-        />
-      </ThemeProvider>
+      {canShow && (
+        <ThemeProvider theme={darkTheme}>
+          <Phone
+            currentPage={currentPage}
+            setPage={(page) => {
+              setPage(page);
+            }}
+          />
+        </ThemeProvider>
+      )}
     </div>
   );
 }

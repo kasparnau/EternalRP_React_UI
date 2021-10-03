@@ -21,8 +21,8 @@
 
 .Phone {
   background-color: #39424f;
-  height: 60vh;
-  width: 15vw;
+  height: 648px;
+  width: 288px;
 
   border-radius: 10px;
 
@@ -54,6 +54,7 @@
   border-radius: 10px 10px 0px 0px;
 
   display: flex;
+  user-select: none;
 }
 
 .TopRowLeft {
@@ -115,7 +116,7 @@
 .Noti {
   background-color: rgba(24, 24, 24, 0.95);
 
-  border-radius: 8px;
+  border-radius: 4px;
   z-index: 10;
   width: 90%;
   height: 12%;
@@ -131,8 +132,6 @@
   justify-content: flex-start;
   align-items: center;
   vertical-align: middle;
-
-  margin-top: 4px;
 }
 
 .NotiBottomRow {
@@ -140,6 +139,6 @@
   width: 100%;
 
   display: flex;
-  margin-top: 2px;
-  margin-bottom: 4px;
+  margin-top: 6px;
+  text-align: left;
 }

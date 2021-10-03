@@ -3,7 +3,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import SavingsIcon from "@mui/icons-material/Savings";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
-import useStore from "./store";
+import { useMainStore } from "../store";
 import { Fade, Tooltip } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 var formatter = new Intl.NumberFormat("en-US", {
@@ -14,7 +14,7 @@ var formatter = new Intl.NumberFormat("en-US", {
 function Details(props) {
   const { NUI } = { ...props };
 
-  const { character } = useStore();
+  const { character } = useMainStore();
   const [pageData, setPageData] = React.useState({});
 
   const formatPhoneNumber = (num) => {

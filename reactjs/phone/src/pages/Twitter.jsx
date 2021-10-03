@@ -13,6 +13,8 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { styled } from "@mui/system";
 
+import { useTwitterStore } from "../store";
+
 const Tweet = (props) => {
   const tweet = props.tweet;
   return (
@@ -71,8 +73,8 @@ const StyledDialog = styled(Dialog)`
 `;
 
 const AddTweetModal = (props) => {
-  const [text, setText] = React.useState("");
-  const [textCorrect, setTextCorrect] = React.useState(false);
+  const { text, setText } = useTwitterStore();
+  const { textCorrect, setTextCorrect } = useTwitterStore();
 
   return (
     <div
@@ -125,7 +127,7 @@ const AddTweetModal = (props) => {
             width: "50%",
             marginRight: "5px",
             backgroundColor: textCorrect ? "#259351" : "rgb(19 80 43)",
-            color: "white",
+            color: textCorrect ? "white" : "rgb(255 255 255 / 30%)",
             margin: "8px",
           }}
           onClick={() => {
@@ -146,9 +148,11 @@ const AddTweetModal = (props) => {
 
 function Twitter(props) {
   const { NUI } = { ...props };
-  const [pageData, setPageData] = React.useState({});
+
+  const { pageData, setPageData } = useTwitterStore();
+  const { modalOpen, openModal } = useTwitterStore();
+
   const dialogClasses = useDialogStyles();
-  const [modalOpen, openModal] = React.useState(false);
 
   function reloadPage() {
     NUI(

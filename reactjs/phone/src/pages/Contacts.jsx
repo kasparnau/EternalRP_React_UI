@@ -25,8 +25,9 @@ import makeStyles from "@mui/styles/makeStyles";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/system";
 
-import useStore from "./store";
 import { Box } from "@mui/system";
+
+import { useContactsStore } from "../store";
 
 const formatPhoneNumber = (num) => {
   num = num?.toString();
@@ -55,11 +56,11 @@ const StyledDialog = styled(Dialog)`
 `;
 
 const AddContactDialog = (props) => {
-  const [name, setName] = React.useState("");
-  const [number, setNumber] = React.useState("");
+  const { name, setName } = useContactsStore();
+  const { number, setNumber } = useContactsStore();
 
-  const [numberCorrect, setNumberCorrect] = React.useState(false);
-  const [nameCorrect, setNameCorrect] = React.useState(false);
+  const { numberCorrect, setNumberCorrect } = useContactsStore();
+  const { nameCorrect, setNameCorrect } = useContactsStore();
 
   return (
     <div
@@ -144,7 +145,8 @@ const AddContactDialog = (props) => {
             marginRight: "5px",
             backgroundColor:
               numberCorrect && nameCorrect ? "#259351" : "rgb(19 80 43)",
-            color: "white",
+            color:
+              numberCorrect && nameCorrect ? "white" : "rgb(255 255 255 / 30%)",
           }}
           onClick={() => {
             props.NUI("addContact", { name, number }, true).then(() => {
@@ -267,14 +269,13 @@ const Contact = (props) => {
 };
 
 function Contacts(props) {
-  const [search, setSearch] = React.useState("");
-  const [modalOpen, openModal] = React.useState(false);
-  const { character } = useStore();
+  const { search, setSearch } = useContactsStore();
+  const { modalOpen, openModal } = useContactsStore();
   const dialogClasses = useDialogStyles();
 
   const { NUI } = { ...props };
 
-  const [pageData, setPageData] = React.useState({});
+  const { contacts, setContacts } = useContactsStore();
 
   function reloadPage() {
     NUI(
@@ -294,7 +295,7 @@ function Contacts(props) {
         ],
       }
     ).then((resp) => {
-      setPageData(resp);
+      setContacts(resp.contacts);
     });
   }
 
@@ -368,7 +369,7 @@ function Contacts(props) {
           margin: "4px",
         }}
       >
-        {pageData?.contacts?.map((contact) => {
+        {contacts?.map((contact) => {
           if (
             contact.name.toLowerCase().includes(search.toLowerCase()) ||
             contact.number.toString().includes(search)
