@@ -65,17 +65,17 @@ function Phone(props) {
           {props.currentPage == "main" && (
             <MainPage setPage={props.setPage} NUI={doNuiAction} />
           )}
-          {props.currentPage == "details" && <Details NUI={doNuiAction} />}
+          {props.currentPage == "detailid" && <Details NUI={doNuiAction} />}
           {props.currentPage == "twitter" && <Twitter NUI={doNuiAction} />}
           {props.currentPage == "ping" && <Ping NUI={doNuiAction} />}
-          {props.currentPage == "contacts" && <Contacts NUI={doNuiAction} />}
-          {props.currentPage == "apartments" && (
+          {props.currentPage == "kontaktid" && <Contacts NUI={doNuiAction} />}
+          {props.currentPage == "kinnisvara" && (
             <Apartments NUI={doNuiAction} />
           )}
-          {props.currentPage == "messages" && <Messages NUI={doNuiAction} />}
-          {props.currentPage == "calls" && <Calls NUI={doNuiAction} />}
-          {props.currentPage == "garage" && <Garage NUI={doNuiAction} />}
-          {props.currentPage == "races" && <Races NUI={doNuiAction} />}
+          {props.currentPage == "sõnumid" && <Messages NUI={doNuiAction} />}
+          {props.currentPage == "kõned" && <Calls NUI={doNuiAction} />}
+          {props.currentPage == "garaaž" && <Garage NUI={doNuiAction} />}
+          {props.currentPage == "rallid" && <Races NUI={doNuiAction} />}
           {props.currentPage == "mail" && <Mail NUI={doNuiAction} />}
         </div>
         <BottomRow setPage={props.setPage} />

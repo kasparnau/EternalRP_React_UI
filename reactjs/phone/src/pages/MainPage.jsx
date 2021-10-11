@@ -67,7 +67,7 @@ function MainPage(props) {
         <AppButton
           gradient="linear-gradient(#85e5ec, #21aaec)"
           content={<InfoIcon style={{ color: "white", fontSize: "2.5em" }} />}
-          name="details"
+          name="detailid"
           setPage={props.setPage}
         />
         <AppButton
@@ -83,19 +83,19 @@ function MainPage(props) {
           content={
             <ContactsIcon style={{ color: "white", fontSize: "2.5em" }} />
           }
-          name="contacts"
+          name="kontaktid"
           setPage={props.setPage}
         />
         <AppButton
           gradient="linear-gradient(#5bba96, #137b47)"
           content={<CallIcon style={{ color: "white", fontSize: "2.5em" }} />}
-          name="calls"
+          name="kõned"
           setPage={props.setPage}
         />
         <AppButton
           gradient="linear-gradient(#87ea65, #05a316)"
           content={<SmsIcon style={{ color: "white", fontSize: "2.5em" }} />}
-          name="messages"
+          name="sõnumid"
           setPage={props.setPage}
         />
         <AppButton
@@ -117,19 +117,19 @@ function MainPage(props) {
           content={
             <DirectionsCarIcon style={{ color: "white", fontSize: "2.5em" }} />
           }
-          name="garage"
+          name="garaaž"
           setPage={props.setPage}
         />
         <AppButton
           gradient="linear-gradient(#c06331, #da8a37)"
           content={<FlagIcon style={{ color: "white", fontSize: "2.5em" }} />}
-          name="races"
+          name="rallid"
           setPage={props.setPage}
         />
         <AppButton
           gradient="linear-gradient(#7ed48b, #2d6736)"
           content={<HomeIcon style={{ color: "white", fontSize: "2.5em" }} />}
-          name="apartments"
+          name="kinnisvara"
           setPage={props.setPage}
         />
       </div>

@@ -80,7 +80,7 @@ const AddContactDialog = (props) => {
           htmlFor="standard-adornment-amount"
           style={{ color: "white" }}
         >
-          Name
+          Nimi
         </InputLabel>
 
         <Input
@@ -113,7 +113,7 @@ const AddContactDialog = (props) => {
           htmlFor="standard-adornment-amount"
           style={{ color: "white" }}
         >
-          Phone Number
+          Telefoni Number
         </InputLabel>
 
         <Input
@@ -157,7 +157,7 @@ const AddContactDialog = (props) => {
           }}
           disabled={!numberCorrect || !nameCorrect}
         >
-          ADD
+          LISA
         </Button>
         <Button
           style={{
@@ -170,7 +170,7 @@ const AddContactDialog = (props) => {
             props.openModal(false);
           }}
         >
-          CANCEL
+          TÜHISTA
         </Button>
       </div>
     </div>
@@ -332,7 +332,7 @@ function Contacts(props) {
                 htmlFor="standard-adornment-amount"
                 style={{ color: "white" }}
               >
-                Search
+                Otsi
               </InputLabel>
 
               <Input

@@ -6,6 +6,7 @@ import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import { useMainStore } from "../store";
 import { Fade, Tooltip } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CardTravelIcon from "@mui/icons-material/CardTravel";
 var formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
@@ -43,6 +44,10 @@ function Details(props) {
         phone_number: 9165881,
         bank: { account_id: 1369, account_balance: 1369631 },
         licenses: [],
+        faction: {
+          group: { faction_name: "LSPD" },
+          member: { rank_name: "Admin", rank_level: 1000 },
+        },
       }
     ).then((resp) => {
       setPageData(resp);
@@ -64,7 +69,7 @@ function Details(props) {
       }}
     >
       <div style={{ padding: "8px" }}>
-        <Tooltip followCursor title="Citizen ID">
+        <Tooltip followCursor title="Kodaniku ID">
           <div style={{ display: "flex", alignItems: "center" }}>
             <div>
               <PersonIcon style={{ color: "white" }} fontSize="large" />
@@ -74,7 +79,7 @@ function Details(props) {
             </div>
           </div>
         </Tooltip>
-        <Tooltip followCursor title="Phone Number">
+        <Tooltip followCursor title="Telefoni Number">
           <div
             style={{
               width: "100%",
@@ -90,7 +95,7 @@ function Details(props) {
             </div>
           </div>
         </Tooltip>
-        <Tooltip followCursor title="Bank Account ID">
+        <Tooltip followCursor title="Pangakonto ID">
           <div style={{ display: "flex", alignItems: "center" }}>
             <div>
               <AccountBalanceIcon style={{ color: "white" }} fontSize="large" />
@@ -100,7 +105,7 @@ function Details(props) {
             </div>
           </div>
         </Tooltip>
-        <Tooltip followCursor title="Bank Account Balance">
+        <Tooltip followCursor title="Pangakonto Saldo">
           <div style={{ display: "flex", alignItems: "center" }}>
             <div>
               <SavingsIcon style={{ color: "white" }} fontSize="large" />
@@ -110,12 +115,22 @@ function Details(props) {
             </div>
           </div>
         </Tooltip>
+        <Tooltip followCursor title="Grupeering">
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <div>
+              <CardTravelIcon style={{ color: "white" }} fontSize="large" />
+            </div>
+            <div style={{ textAlign: "left", paddingLeft: "8px" }}>
+              {pageData.faction
+                ? `${pageData.faction.group.faction_name} | [${pageData.faction.member.rank_level}] ${pageData.faction.member.rank_name}`
+                : `POLE GRUPEERINGUT`}
+            </div>
+          </div>
+        </Tooltip>
       </div>
       <div style={{ padding: "16px" }}>
-        <div style={{ fontSize: "24px" }}>Licenses</div>
-        {pageData.licenses?.length === 0 && (
-          <div>You don't have any licenses</div>
-        )}
+        <div style={{ fontSize: "24px" }}>Load</div>
+        {pageData.licenses?.length === 0 && <div>Sul pole ühtegi luba</div>}
         {pageData.licenses?.map((license) => (
           <License name={license.name} />
         ))}
