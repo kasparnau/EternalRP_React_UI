@@ -75,13 +75,14 @@ const SelectedPlayer = () => {
 const Actions = (props) => {
   const { selectedPlayer } = useMainStore();
 
+  const { register, handleSubmit } = useForm();
   const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-    reset,
+    register: register2,
+    formState: { errors: errors2 },
+    handleSubmit: handleSubmit2,
   } = useForm();
+  const { register: register3, handleSubmit: handleSubmit3 } = useForm();
+  const { register: register4, handleSubmit: handleSubmit4 } = useForm();
 
   return (
     <div
@@ -90,9 +91,101 @@ const Actions = (props) => {
     >
       <Action level={1} name="Ban">
         <SelectedPlayer />
+        <form
+          autoComplete="off"
+          style={{ marginTop: "16px" }}
+          onSubmit={handleSubmit3((data) => {
+            if (!data.hours && !data.minutes && !data.days) {
+              return;
+            }
+            if (selectedPlayer) {
+              props.NUI("banPlayer", {
+                selectedPlayer,
+                days: data.days,
+                hours: data.hours,
+                minutes: data.minutes,
+                reason: data.reason,
+                secret_reason: data.reason,
+              });
+            }
+          })}
+        >
+          <div>
+            Days:
+            <input
+              type="number"
+              style={{ marginLeft: "4px" }}
+              {...register3("days", {})}
+            />
+          </div>
+          <div style={{ marginTop: "4px" }}>
+            Hours:
+            <input
+              type="number"
+              style={{ marginLeft: "4px" }}
+              {...register3("hours", {})}
+            />
+          </div>
+          <div style={{ marginTop: "4px" }}>
+            Minutes:
+            <input
+              type="number"
+              style={{ marginLeft: "4px" }}
+              {...register3("minutes", {})}
+            />
+          </div>
+          <div style={{ marginTop: "4px" }}>
+            Reason:
+            <input
+              type="text"
+              style={{ marginLeft: "4px" }}
+              {...register3("reason", {})}
+            />
+          </div>
+          <div style={{ marginTop: "4px" }}>
+            Secret Reason:
+            <input
+              type="text"
+              style={{ marginLeft: "4px" }}
+              {...register3("secret_reason", {})}
+            />
+          </div>
+          <input
+            type="submit"
+            value="BAN PLAYER"
+            style={{ marginTop: "8px" }}
+          />
+        </form>
       </Action>
       <Action level={1} name="Kick">
         <SelectedPlayer />
+        <div style={{ color: "var(--yellow)" }}>Isik peab olema linnas</div>
+        <form
+          autoComplete="off"
+          style={{ marginTop: "16px" }}
+          onSubmit={handleSubmit4((data) => {
+            if (selectedPlayer && selectedPlayer.source) {
+              props.NUI("kickPlayer", {
+                selectedPlayer,
+                reason: data.reason,
+              });
+            }
+          })}
+        >
+          <div>
+            Reason:
+            <input
+              type="text"
+              style={{ marginLeft: "4px" }}
+              {...register4("reason", {})}
+            />
+          </div>
+          <input
+            type="submit"
+            value="KICK PLAYER"
+            style={{ marginTop: "8px" }}
+          />
+        </form>
       </Action>
       <Action level={1} name="Warn">
         <SelectedPlayer />
@@ -119,12 +212,11 @@ const Actions = (props) => {
         <form
           autoComplete="off"
           style={{ marginTop: "16px" }}
-          onSubmit={handleSubmit((data) => {
+          onSubmit={handleSubmit2((data) => {
             if (selectedPlayer) {
               props.NUI("giveVehicle", {
                 selectedPlayer,
                 model: data.model,
-                plate: data.plate,
               });
             }
           })}
@@ -134,7 +226,7 @@ const Actions = (props) => {
             <input
               type="text"
               style={{ marginLeft: "4px" }}
-              {...register("model", {
+              {...register2("model", {
                 required: {
                   value: true,
                   message: "Väli on tühi :/!",
@@ -142,19 +234,28 @@ const Actions = (props) => {
               })}
             />
           </div>
-          <div style={{ marginTop: "4px" }}>
+          {/* <div style={{ marginTop: "4px" }}>
             Plate:
             <input
               type="text"
+              pattern="[a-zA-Z0-9]+"
               style={{ marginLeft: "4px" }}
-              {...register("plate", {
+              {...register2("plate", {
                 required: {
                   value: true,
-                  message: "Väli on tühi :/!",
+                },
+                minLength: {
+                  value: 8,
+                  message: "Numbrimärk peab olema 8 tähte",
+                },
+                maxLength: {
+                  value: 8,
+                  message: "Numbrimärk peab olema 8 tähte",
                 },
               })}
             />
           </div>
+          <div> {errors2["plate"] && errors2["plate"].message}</div> */}
           <input
             type="submit"
             value="GIVE VEHICLE"
@@ -234,17 +335,27 @@ const Actions = (props) => {
         <ActionButton
           text="Revive"
           onClick={() => {
-            if (!selectedPlayer) {
+            if (!selectedPlayer || !selectedPlayer.source) {
               return;
             }
-            props.NUI("revive", { selectedPlayer });
+            props.NUI("revivePlayer", { selectedPlayer });
           }}
         />
       </Action>
-      <Action level={1} name="Hunger / Thirst Max">
+      <Action level={1} name={`Max Hunger & Thirst`}>
         <SelectedPlayer />
+        <div style={{ color: "var(--yellow)" }}>Isik peab olema linnas</div>
+        <ActionButton
+          text={`Max Hunger & Thirst`}
+          onClick={() => {
+            if (!selectedPlayer) {
+              return;
+            }
+            props.NUI("maxHungerAndThirst", { selectedPlayer });
+          }}
+        />
       </Action>
-      <Action level={1} name="Clothes">
+      <Action level={1} name="Clothes Menu">
         <SelectedPlayer />
         <div style={{ color: "var(--yellow)" }}>Isik peab olema linnas</div>
         <ActionButton
@@ -254,6 +365,19 @@ const Actions = (props) => {
               return;
             }
             props.NUI("openClothes", { selectedPlayer });
+          }}
+        />
+      </Action>
+      <Action level={1} name="Barber Menu">
+        <SelectedPlayer />
+        <div style={{ color: "var(--yellow)" }}>Isik peab olema linnas</div>
+        <ActionButton
+          text="Open Barber Menu For Player"
+          onClick={() => {
+            if (!selectedPlayer) {
+              return;
+            }
+            props.NUI("openBarber", { selectedPlayer });
           }}
         />
       </Action>

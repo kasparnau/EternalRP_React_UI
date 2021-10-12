@@ -123,7 +123,7 @@ const Page = (props) => {
           </div>
           <form
             style={{ marginTop: "16px", marginBottom: "8px", display: "flex" }}
-            autocomplete="off"
+            autoComplete="off"
             onSubmit={handleSubmit(onSubmit)}
           >
             Select From CID:

@@ -132,7 +132,7 @@ function Details(props) {
         <div style={{ fontSize: "24px" }}>Load</div>
         {pageData.licenses?.length === 0 && <div>Sul pole ühtegi luba</div>}
         {pageData.licenses?.map((license) => (
-          <License name={license.name} />
+          <License name={license.license_name} />
         ))}
       </div>
     </div>
