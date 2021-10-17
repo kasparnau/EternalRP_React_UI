@@ -180,7 +180,19 @@ const AddContactDialog = (props) => {
 const Contact = (props) => {
   const [showButtons, setShowButtons] = React.useState(false);
 
-  const call = () => {};
+  const call = () => {
+    props.setPage("main");
+    props.NUI(
+      "callPlayer",
+      {
+        number: props.number,
+        name: props.name,
+        id: props.id,
+      },
+      true,
+      true
+    );
+  };
 
   const message = () => {};
 
@@ -381,6 +393,7 @@ function Contacts(props) {
                 id={contact.id}
                 reloadPage={reloadPage}
                 NUI={props.NUI}
+                setPage={props.setPage}
               />
             );
           }

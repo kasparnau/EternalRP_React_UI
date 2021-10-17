@@ -48,6 +48,7 @@ function Details(props) {
           group: { faction_name: "LSPD" },
           member: { rank_name: "Admin", rank_level: 1000 },
         },
+        job: "Prügimees",
       }
     ).then((resp) => {
       setPageData(resp);
@@ -115,6 +116,16 @@ function Details(props) {
             </div>
           </div>
         </Tooltip>
+        <Tooltip followCursor title="Töökoht">
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <div>
+              <CardTravelIcon style={{ color: "white" }} fontSize="large" />
+            </div>
+            <div style={{ textAlign: "left", paddingLeft: "8px" }}>
+              {pageData.job ? `${pageData.job}` : `POLE TÖÖKOHTA`}
+            </div>
+          </div>
+        </Tooltip>
         <Tooltip followCursor title="Grupeering">
           <div style={{ display: "flex", alignItems: "center" }}>
             <div>
@@ -122,7 +133,7 @@ function Details(props) {
             </div>
             <div style={{ textAlign: "left", paddingLeft: "8px" }}>
               {pageData.faction
-                ? `${pageData.faction.group.faction_name} | [${pageData.faction.member.rank_level}] ${pageData.faction.member.rank_name}`
+                ? `${pageData.faction.group.faction_name} | [${pageData.faction.member.rank_level}] ${pageData.faction.member.rank_name} | Alias: ${pageData.faction.member.alias}`
                 : `POLE GRUPEERINGUT`}
             </div>
           </div>

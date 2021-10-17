@@ -2,19 +2,24 @@ import { Button } from "@mui/material";
 import React from "react";
 import { useMainStore } from "./store";
 import { useForm } from "react-hook-form";
+import { styled } from "@mui/system";
+
+const SmallButton = styled(Button)`
+  width: 250px;
+  color: black;
+`;
 
 const ActionButton = (props) => {
   return (
-    <Button
+    <SmallButton
       style={{
-        color: "white",
-        backgroundColor: "var(--success)",
         marginTop: "8px",
+        backgroundColor: "#dedede",
       }}
       onClick={props.onClick}
     >
       {props.text}
-    </Button>
+    </SmallButton>
   );
 };
 
@@ -34,6 +39,7 @@ const Player = (props) => {
             userSelect: "none",
             display: "flex",
             justifyContent: "space-between",
+            padding: "8px",
           }}
         >
           <div>{`(${player.source}) [${player.citizen_id}] ${player.character_name} | ${player.display_name} | ${player.hex}`}</div>
@@ -45,10 +51,19 @@ const Player = (props) => {
               paddingTop: "24px",
               display: "flex",
               flexDirection: "column",
+              padding: "8px",
+              color: "white",
+              background:
+                "linear-gradient(0deg, rgba(81,96,111,1) 0%, rgba(97,116,134,1) 100%)",
             }}
           >
             <div>Phone: {player.phone}</div>
-            <div>Faction: {player.faction}</div>
+            <div>
+              Faction:{" "}
+              {player.faction
+                ? `${player.faction?.group?.faction_name} | [${player.faction?.member?.rank_level}] ${player.faction?.member?.rank_name}`
+                : `NO FACTION`}
+            </div>
             <ActionButton
               text="SELECT"
               onClick={() => {
@@ -88,7 +103,10 @@ const Page = (props) => {
         character_name: "Pede Homo",
         phone: "1234567",
         hex: "steam:12345678",
-        faction: "LSPD",
+        faction: {
+          group: { faction_name: "LSPD" },
+          member: { rank_name: "Admin", rank_level: 1000 },
+        },
       },
     ]).then((resp) => {
       console.log(resp);
@@ -115,14 +133,19 @@ const Page = (props) => {
         <div
           style={{ width: "100%", display: "flex", flexDirection: "column" }}
         >
-          <div>
+          <div style={{ color: "white" }}>
             Selected Player:{" "}
             {selectedPlayer
               ? `(${selectedPlayer.source}) [${selectedPlayer.citizen_id}] ${selectedPlayer.character_name} | ${selectedPlayer.display_name} | ${selectedPlayer.hex}`
               : "none"}
           </div>
           <form
-            style={{ marginTop: "16px", marginBottom: "8px", display: "flex" }}
+            style={{
+              marginTop: "16px",
+              marginBottom: "8px",
+              display: "flex",
+              color: "white",
+            }}
             autoComplete="off"
             onSubmit={handleSubmit(onSubmit)}
           >

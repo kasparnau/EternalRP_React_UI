@@ -1,20 +1,29 @@
-import { Button } from "@mui/material";
 import React from "react";
-import { useMainStore } from "./store";
 import { useForm } from "react-hook-form";
+
+import Autocomplete from "@mui/material/Autocomplete";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+
+import { useMainStore } from "./store";
+import { styled } from "@mui/system";
+
+const SmallButton = styled(Button)`
+  width: 250px;
+  color: black;
+`;
 
 const ActionButton = (props) => {
   return (
-    <Button
+    <SmallButton
       style={{
-        color: "white",
-        backgroundColor: "var(--success)",
         marginTop: "8px",
+        backgroundColor: "#dedede",
       }}
       onClick={props.onClick}
     >
       {props.text}
-    </Button>
+    </SmallButton>
   );
 };
 
@@ -33,6 +42,7 @@ const Action = (props) => {
                 justifyContent: "space-between",
                 cursor: "pointer",
                 userSelect: "none",
+                padding: "8px",
               }}
               onClick={() => {
                 setOpen(!isOpen);
@@ -47,6 +57,10 @@ const Action = (props) => {
                   paddingTop: "24px",
                   display: "flex",
                   flexDirection: "column",
+                  padding: "8px",
+                  background:
+                    "linear-gradient(0deg, rgba(81,96,111,1) 0%, rgba(97,116,134,1) 100%)",
+                  color: "white",
                 }}
               >
                 {props.children}
@@ -60,7 +74,8 @@ const Action = (props) => {
 };
 
 const SelectedPlayer = () => {
-  const { selectedPlayer } = useMainStore();
+  const { selectedPlayer, setSelectedPlayer, players } = useMainStore();
+  const { plrInputValue, setPlrInputValue } = useMainStore();
 
   return (
     <div>
@@ -68,21 +83,61 @@ const SelectedPlayer = () => {
       {selectedPlayer
         ? `(${selectedPlayer.source}) [${selectedPlayer.citizen_id}] ${selectedPlayer.character_name} | ${selectedPlayer.display_name} | ${selectedPlayer.hex}`
         : "none"}
+      <Autocomplete
+        style={{ marginTop: "4px" }}
+        options={players}
+        getOptionLabel={(option) =>
+          `(${option.source}) [${option.citizen_id}] ${option.character_name} | ${option.display_name} | ${option.hex}`
+        }
+        onChange={(event, value) => {
+          setSelectedPlayer(value);
+        }}
+        onInputChange={(e, newValue) => {
+          setPlrInputValue(newValue);
+        }}
+        renderInput={(params) => (
+          <TextField {...params} label="Target Player" variant="standard" />
+        )}
+      />
     </div>
   );
 };
 
 const Actions = (props) => {
+  const { setPlayers } = useMainStore();
+  const reloadPage = () => {
+    props
+      .NUI("fetchPlayersList", {}, [
+        {
+          source: 9,
+          citizen_id: 3,
+          display_name: "Klicer",
+          character_name: "Pede Homo",
+          phone: "1234567",
+          hex: "steam:12345678",
+          faction: {
+            group: { faction_name: "LSPD" },
+            member: { rank_name: "Admin", rank_level: 1000 },
+          },
+        },
+      ])
+      .then((resp) => {
+        setPlayers(resp);
+      });
+  };
+
+  React.useEffect(() => {
+    reloadPage();
+  }, []);
+
   const { selectedPlayer } = useMainStore();
 
   const { register, handleSubmit } = useForm();
-  const {
-    register: register2,
-    formState: { errors: errors2 },
-    handleSubmit: handleSubmit2,
-  } = useForm();
+  const { register: register2, handleSubmit: handleSubmit2 } = useForm();
   const { register: register3, handleSubmit: handleSubmit3 } = useForm();
   const { register: register4, handleSubmit: handleSubmit4 } = useForm();
+  const { register: register5, handleSubmit: handleSubmit5 } = useForm();
+  const { register: register6, handleSubmit: handleSubmit6 } = useForm();
 
   return (
     <div
@@ -196,14 +251,47 @@ const Actions = (props) => {
       <Action level={1} name="Slay">
         <SelectedPlayer />
       </Action>
-
       <Action level={1} name="Bring">
         <SelectedPlayer />
+        <div style={{ color: "var(--yellow)" }}>Isik peab olema linnas</div>
+        <ActionButton
+          text="Bring Player"
+          onClick={() => {
+            if (!selectedPlayer || !selectedPlayer.source) {
+              return;
+            }
+            props.NUI("bringPlayer", { selectedPlayer });
+          }}
+        />
       </Action>
       <Action level={1} name="Teleport To">
         <SelectedPlayer />
+        <div style={{ color: "var(--yellow)" }}>Isik peab olema linnas</div>
+        <ActionButton
+          text="Teleport To Player"
+          onClick={() => {
+            if (!selectedPlayer || !selectedPlayer.source) {
+              return;
+            }
+            props.NUI("teleportToPlayer", { selectedPlayer });
+          }}
+        />
       </Action>
-
+      <Action level={5} name="Unjail">
+        <SelectedPlayer />
+        <div style={{ color: "var(--yellow)" }}>
+          Isik peab olema linnas ja vanglas
+        </div>
+        <ActionButton
+          text="Unjail Player"
+          onClick={() => {
+            if (!selectedPlayer) {
+              return;
+            }
+            props.NUI("unjailPlayer", { selectedPlayer });
+          }}
+        />
+      </Action>
       <Action level={5} name="Give Property">
         <SelectedPlayer />
       </Action>
@@ -234,28 +322,6 @@ const Actions = (props) => {
               })}
             />
           </div>
-          {/* <div style={{ marginTop: "4px" }}>
-            Plate:
-            <input
-              type="text"
-              pattern="[a-zA-Z0-9]+"
-              style={{ marginLeft: "4px" }}
-              {...register2("plate", {
-                required: {
-                  value: true,
-                },
-                minLength: {
-                  value: 8,
-                  message: "Numbrimärk peab olema 8 tähte",
-                },
-                maxLength: {
-                  value: 8,
-                  message: "Numbrimärk peab olema 8 tähte",
-                },
-              })}
-            />
-          </div>
-          <div> {errors2["plate"] && errors2["plate"].message}</div> */}
           <input
             type="submit"
             value="GIVE VEHICLE"
@@ -265,6 +331,37 @@ const Actions = (props) => {
       </Action>
       <Action level={5} name="Give License">
         <SelectedPlayer />
+        <form
+          autoComplete="off"
+          style={{ marginTop: "16px" }}
+          onSubmit={handleSubmit5((data) => {
+            if (selectedPlayer && selectedPlayer.source) {
+              props.NUI("giveLicense", {
+                selectedPlayer,
+                license: data.license,
+              });
+            }
+          })}
+        >
+          <div>
+            License:
+            <input
+              type="text"
+              style={{ marginLeft: "4px" }}
+              {...register5("license", {
+                required: {
+                  value: true,
+                  message: "Väli on tühi :/!",
+                },
+              })}
+            />
+          </div>
+          <input
+            type="submit"
+            value="GIVE LICENSE"
+            style={{ marginTop: "4px" }}
+          />
+        </form>
       </Action>
       <Action level={5} name="Give Item">
         <SelectedPlayer />
@@ -328,7 +425,56 @@ const Actions = (props) => {
           }}
         />
       </Action>
-
+      <Action level={1} name="Spawn Vehicle">
+        <form
+          autoComplete="off"
+          onSubmit={handleSubmit6((data) => {
+            props.NUI("spawnVehicle", {
+              model: data.model,
+            });
+          })}
+        >
+          <div>
+            Model:
+            <input
+              type="text"
+              style={{ marginLeft: "4px" }}
+              {...register6("model", {
+                required: {
+                  value: true,
+                  message: "Väli on tühi :/!",
+                },
+              })}
+            />
+          </div>
+          <input
+            type="submit"
+            value="SPAWN VEHICLE"
+            style={{ marginTop: "4px" }}
+          />
+        </form>
+      </Action>
+      <Action level={1} name="Vehicle Actions">
+        <div style={{ color: "var(--yellow)" }}>Sa pead istuma sõidukis</div>
+        <ActionButton
+          text="Give Keys"
+          onClick={() => {
+            props.NUI("giveKeys");
+          }}
+        />
+        <ActionButton
+          text="Fix Vehicle"
+          onClick={() => {
+            props.NUI("fixVehicle");
+          }}
+        />
+        <ActionButton
+          text="Delete Vehicle"
+          onClick={() => {
+            props.NUI("deleteVehicle");
+          }}
+        />
+      </Action>
       <Action level={1} name="Revive Player">
         <SelectedPlayer />
         <div style={{ color: "var(--yellow)" }}>Isik peab olema linnas</div>
@@ -380,9 +526,6 @@ const Actions = (props) => {
             props.NUI("openBarber", { selectedPlayer });
           }}
         />
-      </Action>
-      <Action level={1} name="Fix Vehicle">
-        <div style={{ color: "var(--yellow)" }}>Sa pead olema autos</div>
       </Action>
     </div>
   );

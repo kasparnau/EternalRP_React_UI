@@ -1,4 +1,6 @@
 import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
+
 import BottomRow from "./BottomRow.jsx";
 import TopRow from "./TopRow.jsx";
 
@@ -14,9 +16,10 @@ import Races from "./pages/Races.jsx";
 import Mail from "./pages/Mail.jsx";
 import Contacts from "./pages/Contacts.jsx";
 
-import background from "./img/background.png";
+import background from "./img/wallpaper.webp";
 
 import Spinner from "react-spinners/RotateLoader";
+import Noti from "./Noti.jsx";
 
 import sendNUI from "./sendNUI";
 
@@ -37,8 +40,20 @@ function Phone(props) {
     return result;
   }
 
+  const framerVariants = {
+    open: { bottom: "1%" },
+    closed: { bottom: "-50%" },
+  };
+
   return (
-    <div className="PhoneHolder">
+    <motion.div
+      className="PhoneHolder"
+      initial={{ bottom: "-100%" }}
+      transition={{ duration: 0.5 }}
+      exit={{ bottom: "-100%" }}
+      animate={props.canShow ? "open" : "closed"}
+      variants={framerVariants}
+    >
       <div
         className="Phone"
         style={{
@@ -46,7 +61,7 @@ function Phone(props) {
           backgroundSize: "100% 100%",
         }}
       >
-        <TopRow />
+        <TopRow clock={props.clock} />
         {loading && (
           <div
             className="AppPage"
@@ -62,13 +77,42 @@ function Phone(props) {
           className="AppPage"
           style={{ display: !loading ? "block" : "none" }}
         >
+          <div className="NotiContainer">
+            <AnimatePresence>
+              {props.notis &&
+                props.notis
+                  .slice(0)
+                  .reverse()
+                  .map((noti) => {
+                    return (
+                      <Noti
+                        name={noti.title}
+                        description={noti.desc}
+                        buttons={noti.buttons}
+                        NUI={doNuiAction}
+                        id={noti.id}
+                        icon={noti.icon}
+                      />
+                    );
+                  })}
+            </AnimatePresence>
+          </div>
+
           {props.currentPage == "main" && (
-            <MainPage setPage={props.setPage} NUI={doNuiAction} />
+            <MainPage
+              setPage={props.setPage}
+              NUI={doNuiAction}
+              notiCircles={props.notiCircles}
+            />
           )}
           {props.currentPage == "detailid" && <Details NUI={doNuiAction} />}
           {props.currentPage == "twitter" && <Twitter NUI={doNuiAction} />}
-          {props.currentPage == "ping" && <Ping NUI={doNuiAction} />}
-          {props.currentPage == "kontaktid" && <Contacts NUI={doNuiAction} />}
+          {props.currentPage == "ping" && (
+            <Ping NUI={doNuiAction} setPage={props.setPage} />
+          )}
+          {props.currentPage == "kontaktid" && (
+            <Contacts NUI={doNuiAction} setPage={props.setPage} />
+          )}
           {props.currentPage == "kinnisvara" && (
             <Apartments NUI={doNuiAction} />
           )}
@@ -80,7 +124,7 @@ function Phone(props) {
         </div>
         <BottomRow setPage={props.setPage} />
       </div>
-    </div>
+    </motion.div>
   );
 }
 

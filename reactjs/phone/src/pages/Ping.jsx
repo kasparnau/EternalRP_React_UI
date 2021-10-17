@@ -15,8 +15,8 @@ function Ping(props) {
   const { canSend, setCanSend } = usePingStore();
 
   async function sendTarget() {
-    setTarget("");
-    NUI("sendPing", {}, true).then((resp) => {});
+    props.setPage("main");
+    NUI("sendPing", { target }, true, true).then((resp) => {});
   }
 
   return (
@@ -51,7 +51,7 @@ function Ping(props) {
                 htmlFor="filled-adornment-amount"
                 style={{ color: "white" }}
               >
-                Target ID
+                Serveri ID
               </InputLabel>
               <FilledInput
                 value={target}
@@ -81,7 +81,7 @@ function Ping(props) {
               onClick={sendTarget}
               disabled={!canSend}
             >
-              SEND PING
+              SAADA PING
             </Button>
           </div>
         </div>

@@ -34,9 +34,9 @@ const Main = (props) => {
         <Button
           className="CategoryButton"
           style={{
-            backgroundColor:
-              props.page === "actions" ? "var(--dark)" : "var(--primary)",
+            backgroundColor: props.page === "actions" ? "#292929" : "#3e4652",
             color: "white",
+            borderRadius: "0px",
           }}
           onClick={() => {
             props.setPage("actions");
@@ -47,9 +47,9 @@ const Main = (props) => {
         <Button
           className="CategoryButton"
           style={{
-            backgroundColor:
-              props.page === "players" ? "var(--dark)" : "var(--primary)",
+            backgroundColor: props.page === "players" ? "#292929" : "#3e4652",
             color: "white",
+            borderRadius: "0px",
           }}
           onClick={() => {
             props.setPage("players");
@@ -60,9 +60,9 @@ const Main = (props) => {
         <Button
           className="CategoryButton"
           style={{
-            backgroundColor:
-              props.page === "logs" ? "var(--dark)" : "var(--primary)",
+            backgroundColor: props.page === "logs" ? "#292929" : "#3e4652",
             color: "white",
+            borderRadius: "0px",
           }}
           onClick={() => {
             props.setPage("logs");
@@ -82,12 +82,12 @@ const Main = (props) => {
 
 function App() {
   const [canShow, updateShow] = React.useState(!IS_PROD);
-  const { setAdminLevel } = useMainStore();
+  const { adminLevel, setAdminLevel } = useMainStore();
   const [page, setPage] = React.useState("actions");
 
   const darkTheme = createTheme({
     palette: {
-      mode: "dark",
+      mode: "light",
     },
   });
 
@@ -109,8 +109,8 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      {canShow && (
+    <div className="App" style={{ display: canShow ? "flex" : "none" }}>
+      {adminLevel && (
         <ThemeProvider theme={darkTheme}>
           <Main page={page} setPage={setPage} />
         </ThemeProvider>

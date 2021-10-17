@@ -18,6 +18,7 @@ function BottomRow(props) {
           onClick={() => {
             props.setPage("main");
           }}
+          style={{ width: "100%" }}
         >
           <RadioButtonUncheckedIcon style={{ color: "white", width: "100%" }} />
         </Button>
