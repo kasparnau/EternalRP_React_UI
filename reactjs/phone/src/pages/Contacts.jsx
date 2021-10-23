@@ -28,6 +28,7 @@ import { styled } from "@mui/system";
 import { Box } from "@mui/system";
 
 import { useContactsStore } from "../store";
+import { CollectionsBookmarkOutlined } from "@mui/icons-material";
 
 const formatPhoneNumber = (num) => {
   num = num?.toString();
@@ -61,6 +62,8 @@ const AddContactDialog = (props) => {
 
   const { numberCorrect, setNumberCorrect } = useContactsStore();
   const { nameCorrect, setNameCorrect } = useContactsStore();
+
+  const { contacts, setContacts } = useContactsStore();
 
   return (
     <div
@@ -149,9 +152,16 @@ const AddContactDialog = (props) => {
               numberCorrect && nameCorrect ? "white" : "rgb(255 255 255 / 30%)",
           }}
           onClick={() => {
-            props.NUI("addContact", { name, number }, true).then(() => {
-              props.reloadPage();
-            });
+            props
+              .NUI("addContact", { name, number }, 11)
+              .then((addedContactId) => {
+                if (addedContactId) {
+                  setContacts([
+                    ...contacts,
+                    { id: addedContactId, name, number },
+                  ]);
+                }
+              });
 
             props.openModal(false);
           }}
@@ -179,6 +189,7 @@ const AddContactDialog = (props) => {
 
 const Contact = (props) => {
   const [showButtons, setShowButtons] = React.useState(false);
+  const { contacts, setContacts } = useContactsStore();
 
   const call = () => {
     props.setPage("main");
@@ -197,8 +208,10 @@ const Contact = (props) => {
   const message = () => {};
 
   const remove = () => {
-    props.NUI("removeContact", { id: props.id }).then(() => {
-      props.reloadPage();
+    props.NUI("removeContact", { id: props.id }, true, true).then((success) => {
+      if (success) {
+        setContacts([...contacts.filter((contact) => contact.id !== props.id)]);
+      }
     });
   };
 
@@ -305,15 +318,24 @@ function Contacts(props) {
           { id: 8, name: "mingi vend8", number: "8717218" },
           { id: 9, name: "mingi vend9", number: "8717219" },
         ],
-      }
+      },
+      true
     ).then((resp) => {
       setContacts(resp.contacts);
     });
   }
 
   React.useEffect(() => {
-    reloadPage();
+    if (contacts === undefined) {
+      reloadPage();
+    } else {
+      console.log(`contacts was not undefined`);
+    }
   }, []);
+
+  React.useEffect(() => {
+    NUI("updateContactsCache", { contacts }, true, true);
+  }, [contacts]);
 
   return (
     <div

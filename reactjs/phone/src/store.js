@@ -1,4 +1,4 @@
-import create from "zustand";
+import { create, reset } from "./zustandWrapper";
 const IS_PROD = process.env.NODE_ENV === "production";
 
 const debugCharacter = {
@@ -19,7 +19,7 @@ let mainStore = (set) => ({
 export const useMainStore = create(mainStore);
 
 let contactsStore = (set) => ({
-  contacts: [],
+  contacts: undefined,
   setContacts: (contacts) => set((state) => ({ contacts })),
   search: "",
   setSearch: (value) => set((state) => ({ search: value })),
@@ -64,3 +64,14 @@ let pingStore = (set) => ({
 });
 
 export const usePingStore = create(pingStore);
+
+let detailsStore = (set) => ({
+  pageData: {},
+  setPageData: (pageData) => set((state) => ({ pageData })),
+});
+
+export const useDetailsStore = create(detailsStore);
+
+export const resetState = () => {
+  reset();
+};

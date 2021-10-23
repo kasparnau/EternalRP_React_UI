@@ -2,7 +2,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import Phone from "./Phone.jsx";
 import React from "react";
-import { useMainStore } from "./store";
+import { useMainStore, resetState } from "./store";
 import { createTheme } from "@mui/material";
 import { ThemeProvider } from "@mui/private-theming";
 import sendNUI from "./sendNUI";
@@ -129,6 +129,9 @@ function App() {
       }
       if (event.data.hasPhone !== undefined) {
         setHasPhone(event.data.hasPhone);
+      }
+      if (event.data.resetData !== undefined) {
+        resetState();
       }
     });
 

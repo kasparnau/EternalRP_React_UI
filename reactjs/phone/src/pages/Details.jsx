@@ -7,6 +7,8 @@ import { useMainStore } from "../store";
 import { Fade, Tooltip } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CardTravelIcon from "@mui/icons-material/CardTravel";
+import { useDetailsStore } from "../store";
+
 var formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
@@ -16,7 +18,7 @@ function Details(props) {
   const { NUI } = { ...props };
 
   const { character } = useMainStore();
-  const [pageData, setPageData] = React.useState({});
+  const { pageData, setPageData } = useDetailsStore();
 
   const formatPhoneNumber = (num) => {
     num = num?.toString();
@@ -48,8 +50,8 @@ function Details(props) {
           group: { faction_name: "LSPD" },
           member: { rank_name: "Admin", rank_level: 1000 },
         },
-        job: "Prügimees",
-      }
+      },
+      true
     ).then((resp) => {
       setPageData(resp);
     });
@@ -116,16 +118,6 @@ function Details(props) {
             </div>
           </div>
         </Tooltip>
-        <Tooltip followCursor title="Töökoht">
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <div>
-              <CardTravelIcon style={{ color: "white" }} fontSize="large" />
-            </div>
-            <div style={{ textAlign: "left", paddingLeft: "8px" }}>
-              {pageData.job ? `${pageData.job}` : `POLE TÖÖKOHTA`}
-            </div>
-          </div>
-        </Tooltip>
         <Tooltip followCursor title="Grupeering">
           <div style={{ display: "flex", alignItems: "center" }}>
             <div>
@@ -133,7 +125,13 @@ function Details(props) {
             </div>
             <div style={{ textAlign: "left", paddingLeft: "8px" }}>
               {pageData.faction
-                ? `${pageData.faction.group.faction_name} | [${pageData.faction.member.rank_level}] ${pageData.faction.member.rank_name} | Alias: ${pageData.faction.member.alias}`
+                ? `${pageData.faction.group.faction_name} | [${
+                    pageData.faction.member.rank_level
+                  }] ${pageData.faction.member.rank_name}${
+                    pageData.faction.member.alias
+                      ? ` | Alias: ${pageData.faction.member.alias}`
+                      : ``
+                  }`
                 : `POLE GRUPEERINGUT`}
             </div>
           </div>

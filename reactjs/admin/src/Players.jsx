@@ -4,6 +4,9 @@ import { useMainStore } from "./store";
 import { useForm } from "react-hook-form";
 import { styled } from "@mui/system";
 
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+
 const SmallButton = styled(Button)`
   width: 250px;
   color: black;
@@ -43,7 +46,15 @@ const Player = (props) => {
           }}
         >
           <div>{`(${player.source}) [${player.citizen_id}] ${player.character_name} | ${player.display_name} | ${player.hex}`}</div>
-          <div>{isOpen ? `👇` : `👆`}</div>
+          {!props.onClick ? (
+            isOpen ? (
+              <KeyboardArrowUpIcon />
+            ) : (
+              <KeyboardArrowDownIcon />
+            )
+          ) : (
+            ""
+          )}
         </div>
         {isOpen && (
           <div

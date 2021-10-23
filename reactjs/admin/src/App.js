@@ -14,6 +14,7 @@ const IS_PROD = process.env.NODE_ENV === "production";
 const Main = (props) => {
   const [loading, setLoading] = React.useState(false);
   const [canShow, updateShow] = React.useState(!IS_PROD);
+  const [minimized, setMinimized] = React.useState(false);
 
   async function doNuiAction(action, data, mockAnswer, skipLoading) {
     if (!skipLoading) {
@@ -28,8 +29,9 @@ const Main = (props) => {
 
     return result;
   }
+
   return (
-    <div className="Main">
+    <div className="Main" style={{ width: minimized && "30%" }}>
       <div className="Categories">
         <Button
           className="CategoryButton"
@@ -60,21 +62,21 @@ const Main = (props) => {
         <Button
           className="CategoryButton"
           style={{
-            backgroundColor: props.page === "logs" ? "#292929" : "#3e4652",
+            backgroundColor: props.page === "bans" ? "#292929" : "#3e4652",
             color: "white",
             borderRadius: "0px",
           }}
           onClick={() => {
-            props.setPage("logs");
+            props.setPage("bans");
           }}
         >
-          LOGS
+          BANS
         </Button>
       </div>
       <div className="Content">
         <Actions NUI={doNuiAction} show={props.page === "actions"} />
         <Players NUI={doNuiAction} show={props.page === "players"} />
-        {props.page === "logs" && <div>LOGID</div>}
+        {/* <Bans NUI={doNuiAction} show={props.page === "bans"} /> */}
       </div>
     </div>
   );
@@ -82,7 +84,7 @@ const Main = (props) => {
 
 function App() {
   const [canShow, updateShow] = React.useState(!IS_PROD);
-  const { adminLevel, setAdminLevel } = useMainStore();
+  const { adminLevel, setAdminLevel, setItemList } = useMainStore();
   const [page, setPage] = React.useState("actions");
 
   const darkTheme = createTheme({
@@ -98,6 +100,9 @@ function App() {
       }
       if (event.data.admin_level !== undefined) {
         setAdminLevel(event.data.admin_level);
+      }
+      if (event.data.setItemList !== undefined) {
+        setItemList(event.data.setItemList);
       }
     });
 
